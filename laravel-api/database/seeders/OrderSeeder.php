@@ -27,7 +27,7 @@ class OrderSeeder extends Seeder
             $model->save();
             
             for($j = 0; $j < rand(1, 4); $j++){
-                $bookId = rand(1, 50);
+                $bookId = $faker->unique()->numberBetween($min = 1, $max = 50);
                 $book = Book::find($bookId);
                 $model->total_price += $book->price;
 
