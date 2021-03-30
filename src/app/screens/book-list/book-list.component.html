@@ -1,0 +1,17 @@
+<h2> Sách</h2>
+<div class="row">
+    <div *ngFor="let b of books">
+        <div class="col-4">
+            <div class="card" style="width: 18rem;">
+                <!-- <img [src]="b.image"> -->
+                <div class="card-body">
+                    <span>{{b.category.name}}</span>
+                    <h5 class="card-title"><a href="javascript:;" routerLink="/books/{{b.id}}">{{b.title}}</a></h5>
+                    <p>{{b.price}}</p>
+                    <p class="card-text">{{b.author.name}}</p>
+                    <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
