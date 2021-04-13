@@ -3,7 +3,7 @@ import { INavData } from '@coreui/angular';
 export const navItems: INavData[] = [
   {
     name: 'Dashboard',
-    url: 'dashboard',
+    url: '/admin',
     icon: 'icon-speedometer',
   },
   {
@@ -11,45 +11,91 @@ export const navItems: INavData[] = [
     name: 'Components'
   },
   {
-    name: 'Base',
-    url: 'admin/base',
+    name: 'Danh mục',
+    url: 'admin/danh-muc',
     icon: 'icon-puzzle',
     children: [
       {
-        name: 'Forms',
-        url: 'base/forms',
+        name: 'Danh sách',
+        url: 'danh-muc',
         icon: 'icon-puzzle'
       },
       {
-        name: 'Tables',
-        url: 'base/tables',
+        name: 'Thêm mới',
+        url: 'danh-muc/them-moi',
         icon: 'icon-puzzle'
       }
     ]
   },
  
   {
-    name: 'Pages',
-    url: 'admin/pages',
-    icon: 'icon-star',
+    name: 'Quản lý sách',
+    url: 'admin/sach',
+    icon: 'fa fa-book',
     children: [
       {
-        name: 'Login',
-        url: 'login',
+        name: 'Danh sách',
+        url: 'sach',
         icon: 'icon-star'
       },
       {
-        name: 'Error 404',
-        url: '404',
-        icon: 'icon-star'
-      },
-      {
-        name: 'Error 500',
-        url: '500',
+        name: 'Thêm mới',
+        url: 'sach/them-moi',
         icon: 'icon-star'
       }
     ]
   },
+  {
+    name: 'Tác giả',
+    url: 'admin/tac-gia',
+    icon: 'fa fa-at',
+    children: [
+      {
+        name: 'Danh sách',
+        url: 'tac-gia',
+        icon: 'icon-star'
+      },
+      {
+        name: 'Thêm mới',
+        url: 'tac-gia/them-moi',
+        icon: 'icon-star'
+      }
+    ]
+  },
+  {
+    name: 'Tài khoản',
+    url: 'admin/tai-khoan',
+    icon: 'fa fa-user',
+    children: [
+      {
+        name: 'Danh sách',
+        url: 'tai-khoan',
+        icon: 'icon-star'
+      },
+      {
+        name: 'Thêm mới',
+        url: 'tai-khoan/them-moi',
+        icon: 'icon-star'
+      }
+    ]
+  },
+  // {
+  //   name: 'Hoá đơn',
+  //   url: 'admin/hoa-don',
+  //   icon: 'fa fa-first-order',
+  //   children: [
+  //     {
+  //       name: 'Danh sách',
+  //       url: 'hoa-don',
+  //       icon: 'icon-star'
+  //     },
+  //     {
+  //       name: 'Thêm mới',
+  //       url: 'hoa-don/them-moi',
+  //       icon: 'icon-star'
+  //     }
+  //   ]
+  // },
   
   
 ];

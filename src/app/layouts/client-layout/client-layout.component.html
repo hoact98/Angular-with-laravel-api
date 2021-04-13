@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+<div id="main-wrapper">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <app-client-header></app-client-header>
 
-<body>
-    <div class="container">
-        client-layout
-        <!-- <router-outlet></router-outlet> -->
+    <div class="page-wrapper">
+
+        <div class="container-fluid">
+
+            <router-outlet></router-outlet>
+        </div>
+
+        <a class="bt-top btn btn-circle btn-lg btn-info" href="#top"><i class="ti-arrow-up"></i></a>
     </div>
-</body>
 
-</html>
+    <app-client-footer></app-client-footer>
+
+</div>

@@ -11,13 +11,15 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('id','desc')->get();
+        $categories->load('books');
         return response()->json($categories, Response::HTTP_OK);
     }
 
     public function show($id)
     {
         $category = Category::find($id);
+        $category->load('books');
         return response()->json($category, Response::HTTP_OK);
     }
     public function store(Request $request)

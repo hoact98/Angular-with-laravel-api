@@ -1,0 +1,67 @@
+<div class="container spacer">
+    <div class="row m-t-40">
+        <!--Menu Category -->
+        <div class="col-3">
+            <ul class="list-group category-book">
+                <li class="list-group-item active" aria-current="true">DANH MỤC SÁCH</li>
+                <li class="list-group-item" *ngFor='let cate of cates'>
+                    <a href="javascript:;" routerLink="/danh-muc/{{cate.id}}">{{cate.name}}</a>
+                </li>
+            </ul>
+            <div class="list-group selling-book mt-5">
+                <div class="list-group-item active" aria-current="true">SÁCH BÁN CHẠY</div>
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-4">
+                            <a href="">
+                                <img width="72px" src="http://thanh.unitopcv.com/unimart//public/images/products/main/SS-note-10-dd-1.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="col-8">
+                            <a href="">A third item</a>
+                            <p>8.990.000đ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-group-item">A third item</div>
+                <div class="list-group-item">A fourth item</div>
+                <div class="list-group-item">And a fifth one</div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="col-4 offset-5">
+                    <input type="text" class="form-control py-4 border-0" [(ngModel)]="filterObject.keyword" (keyup)="search()" placeholder="Tìm kiếm...">
+                </div>
+                <div class="col-3">
+                    <select class="form-control" (change)="search()" id="" [(ngModel)]="filterObject.orderBy"> 
+                        <option [value]="ord.id" *ngFor="let ord of orderData">{{ord.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <h3 class="text-uppercase">{{books[0].category.name}}</h3>
+            <div class="row">
+                <div class="col-md-3 p-2 mb-4" *ngFor='let b of books | slice: (page-1) * pageSize : page * pageSize'>
+                    <div class="card border-0 rounded-0" data-aos="flip-left" data-aos-duration="1200">
+
+                        <img class="card-img-top p-3" [src]="imageDirectoPath+b.image" alt="wrappixel kit" height="200px">
+                        <h5 class="font-medium mt-2 px-3">
+                            <a href="javascript:;" routerLink="/sach/{{b.id}}" class="linking font-medium text-themecolor m-t-10 cursor-pointer">
+                            {{b.title.substring(0, 10)}}
+                            </a>
+                        </h5>
+                        <p class="mt-2 px-3">
+                            {{ b.price | currency:'VND' }}
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="books.length"></ngb-pagination>
+    </div>
+</div>

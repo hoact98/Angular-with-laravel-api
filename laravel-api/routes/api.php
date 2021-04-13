@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -22,10 +24,27 @@ use App\Http\Controllers\UserController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware('auth:api')->group(function() {
+    Route::post('logout', [AuthController::class,'logout'])->name('logout.api');
 
-Route::prefix('books')->group(function(){
+});
+Route::middleware('cors')->group(function() {
+    Route::post('login', [AuthController::class,'login']);
+
+    Route::post('register', [AuthController::class,'register']);
+});
+
+
+Route::get('bookCate/{id}/search/{keyword?}', [BookController::class,'cateSearch']);
+    Route::get('bookCate/{id}/order/{order?}', [BookController::class,'cateOrder']);
+    Route::get('bookCate/{id}', [BookController::class,'bookCate']);
+
+Route::prefix('books')->middleware('cors')->group(function(){
+    // Route::get('?keyword={keyword}', [BookController::class,'index'])->name('books.index');
     Route::get('/', [BookController::class,'index'])->name('books.index');
-
+    Route::get('/search/{keyword?}', [BookController::class,'search']);
+    Route::get('/order/{order?}', [BookController::class,'order']);
+    
     Route::get('{id}', [BookController::class,'show'])->name('books.show');
     
     Route::post('/', [BookController::class,'store'])->name('books.store');
@@ -39,7 +58,7 @@ Route::prefix('books')->group(function(){
     Route::delete('{id}', [BookController::class,'destroy'])->name('books.destroy');
 });
 
-Route::prefix('categories')->group(function(){
+Route::prefix('categories')->middleware('cors')->group(function(){
     Route::get('/', [CategoryController::class,'index'])->name('categories.index');
 
     Route::get('{id}', [CategoryController::class,'show'])->name('categories.show');
@@ -52,7 +71,7 @@ Route::prefix('categories')->group(function(){
     Route::delete('{id}', [CategoryController::class,'destroy'])->name('categories.destroy');
 });
 
-Route::prefix('authors')->group(function(){
+Route::prefix('authors')->middleware('cors')->group(function(){
     Route::get('/', [AuthorController::class,'index'])->name('authors.index');
 
     Route::get('{id}', [AuthorController::class,'show'])->name('authors.show');
@@ -65,7 +84,7 @@ Route::prefix('authors')->group(function(){
     Route::delete('{id}', [AuthorController::class,'destroy'])->name('authors.destroy');
 });
 
-Route::prefix('orders')->group(function(){
+Route::prefix('orders')->middleware('cors')->group(function(){
     Route::get('/', [OrderController::class,'index'])->name('orders.index');
 
     Route::get('{id}', [OrderController::class,'show'])->name('orders.show');
@@ -78,7 +97,7 @@ Route::prefix('orders')->group(function(){
     Route::delete('{id}', [OrderController::class,'destroy'])->name('orders.destroy');
 });
 
-Route::prefix('users')->group(function(){
+Route::prefix('users')->middleware('cors')->group(function(){
     Route::get('/', [UserController::class,'index'])->name('users.index');
 
     Route::get('{id}', [UserController::class,'show'])->name('users.show');
@@ -89,4 +108,15 @@ Route::prefix('users')->group(function(){
     Route::patch('{id}', [UserController::class,'update'])->name('users.update');
     
     Route::delete('{id}', [UserController::class,'destroy'])->name('users.destroy');
+});
+
+Route::prefix('order-detail')->middleware('cors')->group(function(){
+    Route::get('/', [OrderDetailController::class,'index']);
+
+    Route::get('{id}', [OrderDetailController::class,'show']);
+    
+    Route::post('/', [OrderDetailController::class,'store']);
+    
+    Route::delete('book/{id}', [OrderDetailController::class,'destroyBookId']);
+    Route::delete('order/{id}', [OrderDetailController::class,'destroyOrderId']);
 });

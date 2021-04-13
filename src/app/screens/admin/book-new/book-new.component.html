@@ -1,0 +1,113 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-edit"></i>Thêm sách
+                    <div class="card-header-actions">
+                        <button type="button" class="card-header-action btn btn-link btn-setting"><i class="icon-settings"></i></button>
+                        <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                        <button type="button" class="card-header-action btn btn-link btn-close"><i class="icon-close"></i></button>
+                    </div>
+                </div>
+                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
+                    <form action="" (submit)="submitForm($event)" [formGroup]="bookForm">
+                        <div class="form-group">
+                            <label for="">Tên sách</label>
+                            <input type="text" formControlName="title" class="form-control">
+                        </div>
+                        <div *ngIf="f.title.invalid && (f.title.dirty || f.title.touched)" class="alert alert-danger">
+
+                            <div *ngIf="f.title.errors?.required">
+                                Không được để trống
+                            </div>
+                            <div *ngIf="f.title.errors?.minlength">
+                                Ít nhất 4 ký tự
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Danh mục</label>
+                            <select class="form-control" formControlName="categoryId"> 
+                                <option value="">-- Chọn danh mục --</option>
+                                <option [value]="cate.id" *ngFor="let cate of cates">{{cate.name}}</option>
+                            </select>
+                        </div>
+                        <div *ngIf="f.categoryId.invalid && (f.categoryId.dirty || f.categoryId.touched)" class="alert alert-danger">
+                            <div *ngIf="f.categoryId.errors?.required">
+                                Không được để trống
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Tác giả</label>
+                            <select class="form-control" formControlName="authorId"> 
+                                <option value="">-- Chọn tác giả --</option>
+                                <option [value]="author.id" *ngFor="let author of authors">{{author.name}}</option>
+                            </select>
+                        </div>
+                        <div *ngIf="f.authorId.invalid && (f.authorId.dirty || f.authorId.touched)" class="alert alert-danger">
+
+                            <div *ngIf="f.authorId.errors?.required">
+                                Không được để trống
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Giá</label>
+                            <input type="number" formControlName="price" class="form-control">
+                        </div>
+                        <div *ngIf="f.price.invalid && (f.price.dirty || f.price.touched)" class="alert alert-danger">
+
+                            <div *ngIf="f.price.errors?.required">
+                                Không được để trống
+                            </div>
+                            <div *ngIf="f.price.errors?.min">
+                                Giá phải trên 1000 đồng
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Ảnh</label>
+                            <input type="file" formControlName="image" (change)="imageUpload($event)" class="form-control">
+                        </div>
+                        <div *ngIf="f.image.invalid && (f.image.dirty || f.image.touched)" class="alert alert-danger">
+
+                            <div *ngIf="f.image.errors?.required">
+                                Không được để trống
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Mô tả</label>
+                            <angular-editor id="detail" formControlName="detail" [config]="editorConfig"></angular-editor>
+                        </div>
+                        <div *ngIf="f.detail.invalid && (f.detail.dirty || f.detail.touched)" class="alert alert-danger">
+
+                            <div *ngIf="f.detail.errors?.required">
+                                Không được để trống
+                            </div>
+                            <div *ngIf="f.detail.errors?.minlength">
+                                Ít nhất 4 ký tự
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Mô tả ngắn</label>
+                            <angular-editor id="short_desc" formControlName="short_desc" [config]="editorConfig"></angular-editor>
+                        </div>
+                        <div *ngIf="f.short_desc.invalid && (f.short_desc.dirty || f.short_desc.touched)" class="alert alert-danger">
+
+                            <div *ngIf="f.short_desc.errors?.required">
+                                Không được để trống
+                            </div>
+                            <div *ngIf="f.short_desc.errors?.minlength">
+                                Ít nhất 4 ký tự
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button [disabled]="bookForm.invalid" type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>

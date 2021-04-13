@@ -21,7 +21,7 @@ class BookSeeder extends Seeder
                 'title' => $faker->name,
                 'categoryId'=> rand(1,5),
                 'authorId'=> rand(1,5),
-                'image'=> "images/anh-".rand(1,4).'.jpg',
+                'image'=> "images/book-".rand(1,4).'.jpg',
                 'price'=> $faker->numberBetween($min = 1000, $max = 1000000),
                 'views'=> $faker->numberBetween($min = 0, $max = 200),
                 'detail' => $faker->realText(150, 2),

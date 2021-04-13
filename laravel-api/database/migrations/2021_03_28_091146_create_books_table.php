@@ -24,7 +24,7 @@ class CreateBooksTable extends Migration
             $table->text('short_desc')->nullable();
             $table->string('image',191)->default('images/default.jpg');
             $table->integer('price')->default(0);
-            $table->integer('promotion_price')->default(0);
+            // $table->integer('promotion_price')->default(0);
             $table->integer('views')->default(0);  
             $table->timestamps();
         });

@@ -1,19 +1,24 @@
-<div *ngIf="book == undefined">
-    <p class="text-danger">Loading...</p>
-</div>
-<div class="container" *ngIf="book != undefined">
-    <!-- <p>{{book.title}}</p> -->
-    <div class="row">
-        <div class="col-4">
-            <div class="card" style="width: 18rem;">
-                <!-- <img [src]="book.image" class="img-thumbnail"> -->
-                <div class="card-body">
-                    <h5 class="card-title">{{book.title}}</h5>
-                    <p>{{book.price}}</p>
-                    <p class="card-text">{{book.category.name}}</p>
-                    <p class="card-text">{{book.author.name}}</p>
-                </div>
+<div class="container mt-5">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+
+            <div class="mini-spacer mt-5">
+                <img [src]="imageDirectoPath+book.image" alt="wrapkit" class="img-fluid" />
+                <ul class="text-uppercase m-t-40 list-inline font-13 font-medium">
+                    <li><a routerLink="">{{book.category.name}} </a></li>
+                </ul>
+                <h2 class="title font-light">
+                    {{book.title}}
+                </h2>
+                <p class="m-t-30 m-b-30">
+                    {{book.detail}}
+                </p>
+                <p class="m-t-30 m-b-30">
+                    {{book.price | currency:'VND'}}
+                </p>
+
             </div>
+
         </div>
     </div>
-</div>
+    <!-- Row  -->

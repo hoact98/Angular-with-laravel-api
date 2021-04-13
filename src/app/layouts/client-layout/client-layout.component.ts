@@ -11,5 +11,4 @@ export class ClientLayoutComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

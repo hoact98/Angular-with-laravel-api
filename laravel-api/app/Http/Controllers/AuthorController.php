@@ -10,13 +10,15 @@ class AuthorController extends Controller
 {
     public function index()
     {
-        $authors = Author::all();
+        $authors = Author::orderBy('id','desc')->get();
+        $authors->load('books');
         return response()->json($authors, Response::HTTP_OK);
     }
 
     public function show($id)
     {
         $author = Author::find($id);
+        $author->load('books');
         return response()->json($author, Response::HTTP_OK);
     }
     public function store(Request $request)

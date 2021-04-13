@@ -1,0 +1,56 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-8">
+                            Danh sách
+                        </div>
+                        <div class="col-4">
+                            <form action=""><input type="text" name="keyword" [(ngModel)]="keyword" (keyup)="search()" placeholder="Tìm sản phẩm..." class="form-control"></form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên sách</th>
+                                <th>Danh mục</th>
+                                <th>Ảnh</th>
+                                <th>Giá</th>
+                                <th>Lượt xem</th>
+                                <th>Tác giả</th>
+                                <th>
+                                    <a href="javascript:;" class="btn btn-success" routerLink="/admin/sach/them-moi">Tạo mới</a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let book of books| slice: (page-1) * pageSize : page * pageSize; index as i">
+                                <td>{{i+1}}</td>
+                                <td>{{book.title | titlecase}}</td>
+                                <td>{{book.category.name}}</td>
+                                <td><img [src]="imageDirectoPath+book.image" alt="" width="100"></td>
+                                <td>{{book.price | currency:'VND'}}</td>
+                                <td>{{book.views}}</td>
+                                <td>{{book.author.name}}</td>
+                                <td>
+                                    <a href="javascript:;" class="btn btn-info mr-1" routerLink="/admin/sach/edit/{{book.id}}">
+                                    Sửa</a>
+                                    <button class="btn btn-danger" (click)="delete(book.id)">Xoá</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="books.length"></ngb-pagination>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+</div>
