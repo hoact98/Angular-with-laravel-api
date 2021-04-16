@@ -9,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  message='';
   profileForm = new FormGroup({
     email: new FormControl('', [Validators.required,Validators.email]),
     password: new FormControl('', [Validators.required,Validators.minLength(6)]),
@@ -18,6 +19,13 @@ isCheckLogin:boolean = false;
   constructor(private userService: UserService,private router:Router) { }
 
   ngOnInit(): void {
+    if(localStorage.getItem('access_token')!=null){
+      this.userService.user().subscribe(item=>{
+        if(item.role==1){
+            this.router.navigate(['/admin']);
+        }
+      })
+    }
   }
   get f(){
     return this.profileForm.controls;
@@ -25,10 +33,11 @@ isCheckLogin:boolean = false;
   onSubmit(event) {
     event.preventDefault();
          this.userService.login(this.profileForm.value).subscribe(item=>{
-           
              if(item.status=='success'){
-                  console.log("Success login");
+              localStorage.setItem('access_token', item.access_token);
                   this.router.navigate(['/admin']);
+             }else{
+              this.message= item.message;
              }
         })
 

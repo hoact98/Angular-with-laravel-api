@@ -22,15 +22,15 @@ export class BookNewComponent implements OnInit {
   editorConfig: AngularEditorConfig = {
     editable: true,
       spellcheck: true,
-      height: 'auto',
-      minHeight: '0',
+      height: '10rem',
+      minHeight: '5rem',
       maxHeight: 'auto',
       width: 'auto',
       minWidth: '0',
       translate: 'yes',
       enableToolbar: true,
       showToolbar: true,
-      placeholder: 'Enter text here...',
+      placeholder: 'Nhập nội dung...',
       defaultParagraphSeparator: '',
       defaultFontName: '',
       defaultFontSize: '',
@@ -55,7 +55,7 @@ export class BookNewComponent implements OnInit {
         tag: 'h1',
       },
     ],
-    uploadUrl: 'v1/image',
+    uploadUrl: 'http://localhost:8000/api/ang_editor/upload',
     uploadWithCredentials: false,
     sanitize: true,
     toolbarPosition: 'top',
@@ -111,7 +111,7 @@ imageUpload(event){
       myFormData.append('data', JSON.stringify(this.bookForm.value));
 
     this.bookService.store(myFormData,headers).subscribe(data => {
-      if(data.id != undefined){
+      if(data.id){
         Swal.fire({
           icon: 'success',
           title: 'Thêm sách thành công!',
@@ -119,6 +119,8 @@ imageUpload(event){
           timer: 1500
         })
         this.router.navigate(['/admin/sach']);
+      }else{
+        console.log(data)
       }
     })
  

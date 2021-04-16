@@ -29,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let book of books| slice: (page-1) * pageSize : page * pageSize; index as i">
+                            <tr *ngFor="let book of books; index as i">
                                 <td>{{i+1}}</td>
                                 <td>{{book.title | titlecase}}</td>
                                 <td>{{book.category.name}}</td>
@@ -46,7 +46,7 @@
                         </tbody>
                     </table>
                     <nav>
-                        <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="books.length"></ngb-pagination>
+                        <ngb-pagination [(page)]="page" #numPages (pageChange)="search()" [pageSize]="pageSize" [collectionSize]="last_page"></ngb-pagination>
                     </nav>
                 </div>
             </div>

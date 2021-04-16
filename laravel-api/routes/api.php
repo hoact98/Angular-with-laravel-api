@@ -21,19 +21,20 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 Route::middleware('auth:api')->group(function() {
-    Route::post('logout', [AuthController::class,'logout'])->name('logout.api');
-
+    Route::get('logout', [AuthController::class,'logout'])->name('logout.api');
+    Route::get('user', [AuthController::class,'user'])->name('user.api');
+   
 });
 Route::middleware('cors')->group(function() {
-    Route::post('login', [AuthController::class,'login']);
+    Route::post('login', [AuthController::class,'login'])->name('login');
 
     Route::post('register', [AuthController::class,'register']);
 });
-
+Route::post('ang_editor/upload',[BookController::class,'uploadImage']);
 
 Route::get('bookCate/{id}/search/{keyword?}', [BookController::class,'cateSearch']);
     Route::get('bookCate/{id}/order/{order?}', [BookController::class,'cateOrder']);
@@ -44,6 +45,7 @@ Route::prefix('books')->middleware('cors')->group(function(){
     Route::get('/', [BookController::class,'index'])->name('books.index');
     Route::get('/search/{keyword?}', [BookController::class,'search']);
     Route::get('/order/{order?}', [BookController::class,'order']);
+    Route::get('/relate/{id}/{idPro}', [BookController::class,'relate']);
     
     Route::get('{id}', [BookController::class,'show'])->name('books.show');
     

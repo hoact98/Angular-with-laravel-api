@@ -12,14 +12,16 @@ export class BookService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(keyword: any): Observable<any>{
+  getAll(keyword: any, page:any): Observable<any>{
     let requestUrl = `${this.API_URL}`;
     if(keyword.length > 0){
       requestUrl += `/search/${keyword}`;
     }
+    requestUrl += `?page=${page}`;
     return this.http.get<any>(requestUrl);
   }
-  getBook(filter: any): Observable<any>{
+
+  getBook(filter: any, page:any): Observable<any>{
     let requestUrl = this.API_URL;
     switch (filter.orderBy) {
       case "2":
@@ -34,7 +36,7 @@ export class BookService {
     if(filter.keyword.length > 0){
       requestUrl += `/search/${filter.keyword}`;
     }
-    
+    requestUrl += `?page=${page}`;
     return this.http.get<any>(requestUrl);
   }
   getBookCate(filter: any,id): Observable<any>{
@@ -54,6 +56,10 @@ export class BookService {
       requestUrl = `http://localhost:8000/api/bookCate/${id}/search/${filter.keyword}`;
     }
     
+    return this.http.get<any>(requestUrl);
+  }
+  getRelate(id:any,idPro:any): Observable<any>{
+    let requestUrl = `${this.API_URL}/relate/${id}/${idPro}`;
     return this.http.get<any>(requestUrl);
   }
   findById(id: any): Observable<any>{

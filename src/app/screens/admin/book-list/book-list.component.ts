@@ -14,6 +14,7 @@ export class BookListComponent implements OnInit {
   imageDirectoPath: any = 'http://localhost:8000/';
   page = 1;
   pageSize = 10;
+  last_page=1;
   keyword='';
   constructor(private bookService: BookService, private router: Router) { }
 
@@ -22,10 +23,14 @@ export class BookListComponent implements OnInit {
   }
 
   search(){
-    this.bookService.getAll(this.keyword).subscribe(data => {
-      this.books = data;
+    this.bookService.getAll(this.keyword,this.page).subscribe(res => {
+      this.pageSize= res.per_page;
+      this.page = res.current_page;
+      this.last_page = res.last_page * res.per_page;
+      this.books = res.data;
     })
   }
+ 
   delete(id: number){
     Swal.fire({
       title: 'Bạn có chắc?',

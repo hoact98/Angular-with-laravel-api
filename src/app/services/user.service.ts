@@ -4,8 +4,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map,catchError } from 'rxjs/operators';
 
+// let access_token = JSON.parse(localStorage.getItem('access_token'));
+
 const httpOptions = {
-  headers:new HttpHeaders({'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'})
+  headers:new HttpHeaders({'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest',
+  'Authorization': 'Bearer '+ localStorage.getItem('access_token')})
 };
 @Injectable({
   providedIn: 'root'
@@ -48,6 +51,20 @@ export class UserService {
               return user;
           }));
   }
-
-
+  logout() {
+    let requestUrl = `http://localhost:8000/api/logout`;
+    return this.http.get<any>(requestUrl,httpOptions)
+    .pipe(map(user => {
+    localStorage.removeItem('access_token');
+        return user;
+    }));
+  }
+  
+  user(){
+    let requestUrl = `http://localhost:8000/api/user`;
+    return this.http.get<any>(requestUrl,httpOptions)
+    .pipe(map(user => {
+        return user;
+    }));
+  }
 }

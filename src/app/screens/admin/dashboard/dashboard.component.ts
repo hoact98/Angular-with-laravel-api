@@ -20,7 +20,8 @@ export class DashboardComponent implements OnInit {
   cates: Category[]=[];
   books: Book[]=[];
   users: User[]=[];
-  keyword=''
+  keyword='';
+  page=1;
   constructor(private cateService: CategoryService,private userService: UserService,private bookService: BookService, private authorService: AuthorService) { }
 
   radioModel: string = 'Month';
@@ -29,7 +30,7 @@ export class DashboardComponent implements OnInit {
   public lineChart1Data: Array<any> = [
     {
       data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Series A'
+      label: 'Sách'
     }
   ];
   public lineChart1Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
@@ -242,8 +243,8 @@ export class DashboardComponent implements OnInit {
     })
   }
   getBookList(){
-    this.bookService.getAll(this.keyword).subscribe(data=>{
-      this.books = data;
+    this.bookService.getAll(this.keyword,this.page).subscribe(data=>{
+      this.books = data.total;
     })
   }
   getUserList(){

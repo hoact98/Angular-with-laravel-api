@@ -14,7 +14,8 @@ export class HomepageComponent implements OnInit {
   cates: any[]=[];
   imageDirectoPath: any = 'http://localhost:8000/';
   page = 1;
-  pageSize = 12;
+  pageSize = 10;
+  last_page=1;
   orderData: any[]= ORDER_DATA;
   filterObject = {
     orderBy: "1",
@@ -27,8 +28,11 @@ export class HomepageComponent implements OnInit {
     })
   }
   search(){
-    this.bookService.getBook(this.filterObject).subscribe(data => {
-      this.books = data;
+    this.bookService.getBook(this.filterObject,this.page).subscribe(res => {
+      this.pageSize= res.per_page;
+      this.page = res.current_page;
+      this.last_page = res.last_page * res.per_page;
+      this.books = res.data;
     })
   }
 }

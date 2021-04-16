@@ -39,6 +39,7 @@
                                             Ít nhất 6 ký tự
                                         </div>
                                     </div>
+                                    <div *ngIf="message" class="alert alert-danger">{{message}}</div>
                                     <div class="row">
                                         <div class="col-6">
                                             <button type="submit" [disabled]="profileForm.invalid" class="btn btn-primary px-4">Đăng nhập</button>
