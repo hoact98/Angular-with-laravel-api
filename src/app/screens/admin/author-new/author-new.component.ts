@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-author-new',
@@ -11,6 +12,8 @@ import Swal from 'sweetalert2';
 })
 export class AuthorNewComponent implements OnInit {
 authorForm: FormGroup;
+errors:any;
+
 constructor(private authorService: AuthorService,
   private router: Router) { 
 this.authorForm = this.createForm();
@@ -37,7 +40,10 @@ this.authorForm = this.createForm();
         })
         this.router.navigate(['/admin/tac-gia']);
       }
-    })
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.errors=errorResponse.error.errors;
+    },)
   }
   public isCollapsed: boolean;
   iconCollapse: string = 'icon-arrow-up';

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveAuthorRequest;
 use App\Models\Author;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,11 +22,11 @@ class AuthorController extends Controller
         $author->load('books');
         return response()->json($author, Response::HTTP_OK);
     }
-    public function store(Request $request)
+    public function store(SaveAuthorRequest $request)
     {
          return Author::create($request->all());
     }
-    public function update(Request $request,$id)
+    public function update(SaveAuthorRequest $request,$id)
     {
         return Author::where('id',$id)->update($request->all());
     }

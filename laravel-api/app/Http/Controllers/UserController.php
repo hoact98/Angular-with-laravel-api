@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,7 +23,7 @@ class UserController extends Controller
         $user = User::find($id);
         return response()->json($user, Response::HTTP_OK);
     }
-    public function store(Request $request)
+    public function store(SaveUserRequest $request)
     {
         if($request->hasFile('avatar')){
             $image = $request->file('avatar');
@@ -30,16 +31,16 @@ class UserController extends Controller
             $image->move(public_path('images/user'),$images);
             $imageName = 'images/user/'.$images;
          }
-         $data = json_decode($request->data);  
          $user= new User();
-         $user->name =$data->name;
-         $user->email = $data->email;
+         $user->name =$request->name;
+         $user->email = $request->email;
          $user->password = Hash::make($request->password);
          $user->avatar = $imageName;
+         $user->role = $request->role;
          $user->save();
          return response()->json($user, Response::HTTP_OK);
     }
-    public function update(Request $request,$id)
+    public function update(SaveUserRequest $request,$id)
     {
         $user = User::find($id);
         $imageName = $user->avatar;
@@ -49,10 +50,10 @@ class UserController extends Controller
             $image->move(public_path('images/user'),$images);
             $imageName = 'images/user/'.$images;
          }
-         $data = json_decode($request->data);  
-         $user->name =$data->name;
-         $user->email = $data->email;
+         $user->name =$request->name;
+         $user->email = $request->email;
          $user->avatar = $imageName;
+         $user->role = $request->role;
          $user->save();
     }
     public function destroy($id)

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { HttpHeaders } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-user-new',
@@ -13,6 +14,7 @@ import Swal from 'sweetalert2';
 export class UserNewComponent implements OnInit {
   files:any;
   userForm: FormGroup;
+  errors:any;
 
   constructor(private userService: UserService,
     private router: Router) { 
@@ -28,6 +30,7 @@ export class UserNewComponent implements OnInit {
       email: new FormControl('', [Validators.required,Validators.email]),
       password: new FormControl('', [Validators.required,Validators.minLength(6)]),
       avatar: new FormControl('', [Validators.required]),
+      role: new FormControl('', [Validators.required]),
     });
   }
   get f(){
@@ -44,7 +47,10 @@ export class UserNewComponent implements OnInit {
       headers.append('Content-Type', 'multipart/form-data');
       headers.append('Accept', 'application/json');
       myFormData.append('avatar', this.files);
-      myFormData.append('data', JSON.stringify(this.userForm.value));
+      myFormData.append('id',this.userForm.value.id);
+      myFormData.append('name',this.userForm.value.name);
+      myFormData.append('email',this.userForm.value.email);
+      myFormData.append('role',this.userForm.value.role);
 
     this.userService.store(myFormData,headers).subscribe(data => {
       if(data.id != undefined){
@@ -56,7 +62,10 @@ export class UserNewComponent implements OnInit {
         })
         this.router.navigate(['/admin/tai-khoan']);
       }
-    })
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.errors=errorResponse.error.errors;
+    },)
  
   }
   public isCollapsed: boolean;

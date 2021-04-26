@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveBookRequest;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -101,46 +102,27 @@ class BookController extends Controller
         $book->load('author');
         return response()->json($book, Response::HTTP_OK);
     }
-    public function store(Request $request)
+    public function store(SaveBookRequest $request)
     {
-        // $rule= [
-        //     'title' => [
-        //         'required',
-        //         'min:4',
-        //         Rule::unique('books')
-        //     ],
-        //     'image' => 'image',
-        // ];
-        // $messages = [
-        //     'title.required' => "Hãy nhập tên sách",
-        //     'title.min' => "Ít nhất có 4 ký tự",
-        //     'title.unique' => "Tên sách đã tồn tại",
-        //     'image.image' => "Hãy chọn file ảnh",
-        // ];
-   
-        // $validator =  Validator::make($request->all(),$rule,$messages);
-        //   if ($validator->fails()) { 
-        //     return response()->json(['error'=>$validator->errors()]);
-        //   }
+        
         if($request->hasFile('image')){
             $image = $request->file('image');
             $images = time().'-'.$image->getClientOriginalName();
             $image->move(public_path('images/book'),$images);
             $imageName = 'images/book/'.$images;
          }
-         $data = json_decode($request->data);  
          $book= new Book();
-         $book->title =$data->title;
-         $book->categoryId = $data->categoryId;
-         $book->authorId = $data->authorId;
-         $book->detail = $data->detail;
-         $book->short_desc = $data->short_desc;
-         $book->price = $data->price;
+         $book->title =$request->title;
+         $book->categoryId = $request->categoryId;
+         $book->authorId = $request->authorId;
+         $book->detail = $request->detail;
+         $book->short_desc = $request->short_desc;
+         $book->price = $request->price;
          $book->image = $imageName;
          $book->save();
          return response()->json($book, Response::HTTP_OK);
     }
-    public function update(Request $request,$id)
+    public function update(SaveBookRequest $request,$id)
     {
         $book = Book::find($id);
         $imageName = $book->image;
@@ -150,13 +132,12 @@ class BookController extends Controller
             $image->move(public_path('images/book'),$images);
             $imageName = 'images/book/'.$images;
          }
-        $data = json_decode($request->data); 
-         $book->title =$data->title;
-         $book->categoryId = $data->categoryId;
-         $book->authorId = $data->authorId;
-         $book->detail = $data->detail;
-         $book->short_desc = $data->short_desc;
-         $book->price = $data->price;
+         $book->title =$request->title;
+         $book->categoryId = $request->categoryId;
+         $book->authorId = $request->authorId;
+         $book->detail = $request->detail;
+         $book->short_desc = $request->short_desc;
+         $book->price = $request->price;
          $book->image = $imageName;
          $book->save();
     }

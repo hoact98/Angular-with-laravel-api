@@ -41,7 +41,6 @@ Route::get('bookCate/{id}/search/{keyword?}', [BookController::class,'cateSearch
     Route::get('bookCate/{id}', [BookController::class,'bookCate']);
 
 Route::prefix('books')->middleware('cors')->group(function(){
-    // Route::get('?keyword={keyword}', [BookController::class,'index'])->name('books.index');
     Route::get('/', [BookController::class,'index'])->name('books.index');
     Route::get('/search/{keyword?}', [BookController::class,'search']);
     Route::get('/order/{order?}', [BookController::class,'order']);
@@ -86,18 +85,6 @@ Route::prefix('authors')->middleware('cors')->group(function(){
     Route::delete('{id}', [AuthorController::class,'destroy'])->name('authors.destroy');
 });
 
-Route::prefix('orders')->middleware('cors')->group(function(){
-    Route::get('/', [OrderController::class,'index'])->name('orders.index');
-
-    Route::get('{id}', [OrderController::class,'show'])->name('orders.show');
-    
-    Route::post('/', [OrderController::class,'store'])->name('orders.store');
-    
-    Route::put('{id}', [OrderController::class,'update'])->name('orders.update');
-    Route::patch('{id}', [OrderController::class,'update'])->name('orders.update');
-    
-    Route::delete('{id}', [OrderController::class,'destroy'])->name('orders.destroy');
-});
 
 Route::prefix('users')->middleware('cors')->group(function(){
     Route::get('/', [UserController::class,'index'])->name('users.index');
@@ -112,13 +99,25 @@ Route::prefix('users')->middleware('cors')->group(function(){
     Route::delete('{id}', [UserController::class,'destroy'])->name('users.destroy');
 });
 
-Route::prefix('order-detail')->middleware('cors')->group(function(){
-    Route::get('/', [OrderDetailController::class,'index']);
+// Route::prefix('order-detail')->middleware('cors')->group(function(){
+//     Route::get('/', [OrderDetailController::class,'index']);
 
-    Route::get('{id}', [OrderDetailController::class,'show']);
+//     Route::get('{id}', [OrderDetailController::class,'show']);
     
-    Route::post('/', [OrderDetailController::class,'store']);
+//     Route::post('/', [OrderDetailController::class,'store']);
     
-    Route::delete('book/{id}', [OrderDetailController::class,'destroyBookId']);
-    Route::delete('order/{id}', [OrderDetailController::class,'destroyOrderId']);
-});
+//     Route::delete('book/{id}', [OrderDetailController::class,'destroyBookId']);
+//     Route::delete('order/{id}', [OrderDetailController::class,'destroyOrderId']);
+// });
+// Route::prefix('orders')->middleware('cors')->group(function(){
+//     Route::get('/', [OrderController::class,'index'])->name('orders.index');
+
+//     Route::get('{id}', [OrderController::class,'show'])->name('orders.show');
+    
+//     Route::post('/', [OrderController::class,'store'])->name('orders.store');
+    
+//     Route::put('{id}', [OrderController::class,'update'])->name('orders.update');
+//     Route::patch('{id}', [OrderController::class,'update'])->name('orders.update');
+    
+//     Route::delete('{id}', [OrderController::class,'destroy'])->name('orders.destroy');
+// });

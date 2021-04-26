@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
 import Swal from 'sweetalert2';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-cate-new',
@@ -11,6 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class CateNewComponent implements OnInit {
   cateForm: FormGroup;
+  errors:any;
   constructor(private cateService: CategoryService,
     private router: Router) { 
   this.cateForm = this.createForm();
@@ -38,7 +40,10 @@ export class CateNewComponent implements OnInit {
         })
         this.router.navigate(['/admin/danh-muc']);
       }
-    })
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.errors=errorResponse.error.errors;
+    },)
   }
   public isCollapsed: boolean;
   iconCollapse: string = 'icon-arrow-up';

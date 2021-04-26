@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { HttpHeaders } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-user-edit',
@@ -16,6 +17,7 @@ export class UserEditComponent implements OnInit {
   userId: Number = -1;
   imageDirectoPath: any = 'http://localhost:8000/';
   avatar='';
+  errors:any;
 
   constructor(private userService: UserService,
     private route: ActivatedRoute,
@@ -35,6 +37,7 @@ export class UserEditComponent implements OnInit {
            id: data.id,
            name: data.name,
            email: data.email,
+           role: data.role,
            avatar: '',
         }
       );
@@ -47,6 +50,7 @@ export class UserEditComponent implements OnInit {
       id: new FormControl(-1),
       name: new FormControl('', [Validators.required,Validators.minLength(4)]),
       email: new FormControl('', [Validators.required,Validators.email]),
+      role: new FormControl('', [Validators.required]),
       avatar: new FormControl(''),
     });
   }
@@ -64,7 +68,10 @@ export class UserEditComponent implements OnInit {
       headers.append('Content-Type', 'multipart/form-data');
       headers.append('Accept', 'application/json');
       myFormData.append('avatar', this.files);
-      myFormData.append('data', JSON.stringify(this.editForm.value));
+      myFormData.append('name', this.editForm.value.name);
+      myFormData.append('id', this.editForm.value.id);
+      myFormData.append('email', this.editForm.value.email);
+      myFormData.append('role', this.editForm.value.role);
       myFormData.append('_method', 'PUT');
     this.userService.update(myFormData,headers).subscribe(data => {
       Swal.fire({
@@ -74,7 +81,10 @@ export class UserEditComponent implements OnInit {
         timer: 1500
       })
         this.router.navigate(['/admin/tai-khoan']);
-    })
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.errors=errorResponse.error.errors;
+    },)
  
   }
   public isCollapsed: boolean;

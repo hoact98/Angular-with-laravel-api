@@ -9,6 +9,7 @@ import { Category } from 'src/app/models/category';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { HttpHeaders } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-book-edit',
@@ -22,6 +23,7 @@ export class BookEditComponent implements OnInit {
   authors: Author[]=[];
   cates: Category[]=[];
   files:any;
+  errors:any;
   image = '';
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -125,17 +127,24 @@ export class BookEditComponent implements OnInit {
       this.cates = data;
     })
   }
+  
   imageUpload(event){
     this.files = event.target.files[0];
   }
   saveBook(event){
     event.preventDefault();
-    var myFormData = new FormData();
-      const headers = new HttpHeaders();
+    let myFormData = new FormData();
+     let headers = new HttpHeaders();
       headers.append('Content-Type', 'multipart/form-data');
       headers.append('Accept', 'application/json');
       myFormData.append('image', this.files);
-      myFormData.append('data', JSON.stringify(this.editForm.value));
+      myFormData.append('id', this.editForm.value.id);
+      myFormData.append('title', this.editForm.value.title);
+      myFormData.append('categoryId', this.editForm.value.categoryId);
+      myFormData.append('detail', this.editForm.value.detail);
+      myFormData.append('short_desc', this.editForm.value.short_desc);
+      myFormData.append('authorId', this.editForm.value.authorId);
+      myFormData.append('price', this.editForm.value.price);
       myFormData.append('_method', 'PUT');
     this.bookService.update(myFormData,headers).subscribe(data => {
       Swal.fire({
@@ -145,7 +154,10 @@ export class BookEditComponent implements OnInit {
         timer: 1500
       })
         this.router.navigate(['/admin/sach']);
-    })
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.errors=errorResponse.error.errors;
+    },)
   }
   public isCollapsed: boolean;
   iconCollapse: string = 'icon-arrow-up';

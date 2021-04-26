@@ -25,6 +25,9 @@
                                 Ít nhất 4 ký tự
                             </div>
                         </div>
+                        <div *ngIf="errors" class="alert alert-danger">
+                            {{errors.name}}
+                        </div>
                         <div class="text-center">
                             <button [disabled]="cateForm.invalid" type="submit" class="btn btn-primary">Lưu</button>
                         </div>

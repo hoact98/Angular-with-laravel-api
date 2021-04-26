@@ -28,7 +28,7 @@ export class UserService {
   }
 
   update(data,headers):Observable<User>{
-    let requestUrl = `${this.API_URL}/${JSON.parse(data.get('data')).id}`;
+    let requestUrl = `${this.API_URL}/${data.get('id')}`;
     return this.http.post<User>(requestUrl,data, {
       headers: headers
       });

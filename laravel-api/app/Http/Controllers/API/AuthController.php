@@ -67,7 +67,7 @@ class AuthController extends Controller
       return response()->json(['error'=>$validator->errors()]);
     }
     $postArray = $request->all(); 
-    $postArray['password'] = bcrypt($postArray['password']); 
+    $postArray['password'] = Hash::make($postArray['password']); 
     $user = User::create($postArray); 
     $success['token'] =  $user->createToken('LaraPassport')->accessToken; 
     $success['name'] =  $user->name;

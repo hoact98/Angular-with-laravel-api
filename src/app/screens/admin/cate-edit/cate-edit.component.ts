@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from 'src/app/services/category.service';
 import Swal from 'sweetalert2';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-cate-edit',
@@ -10,7 +11,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./cate-edit.component.css']
 })
 export class CateEditComponent implements OnInit {
-
+  errors:any;
   cateId: Number = -1;
   editForm: FormGroup;
   constructor(private route: ActivatedRoute,
@@ -52,7 +53,10 @@ export class CateEditComponent implements OnInit {
         timer: 1500
       })
       this.router.navigate(['/admin/danh-muc']);
-    })
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.errors=errorResponse.error.errors;
+    },)
   }
   public isCollapsed: boolean;
   iconCollapse: string = 'icon-arrow-up';

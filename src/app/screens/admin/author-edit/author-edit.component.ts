@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-author-edit',
@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class AuthorEditComponent implements OnInit {
   authorId: Number = -1;
+  errors:any;
   editForm: FormGroup;
   constructor(private route: ActivatedRoute,
             private router: Router,
@@ -53,7 +54,10 @@ export class AuthorEditComponent implements OnInit {
         timer: 1500
       })
       this.router.navigate(['/admin/tac-gia']);
-    })
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.errors=errorResponse.error.errors;
+    },)
   }
   public isCollapsed: boolean;
   iconCollapse: string = 'icon-arrow-up';

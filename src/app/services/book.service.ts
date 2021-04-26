@@ -73,7 +73,7 @@ export class BookService {
   }
  
   update(data,headers):Observable<Book>{
-    let requestUrl = `${this.API_URL}/${JSON.parse(data.get('data')).id}`;
+    let requestUrl = `${this.API_URL}/${data.get('id')}`;
     return this.http.post<Book>(requestUrl,data, {
       headers: headers
       });

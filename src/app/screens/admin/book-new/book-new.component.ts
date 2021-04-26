@@ -9,6 +9,8 @@ import { Category } from 'src/app/models/category';
 import { HttpHeaders } from '@angular/common/http';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import Swal from 'sweetalert2';
+import {HttpErrorResponse} from '@angular/common/http';
+
 @Component({
   selector: 'app-book-new',
   templateUrl: './book-new.component.html',
@@ -17,6 +19,7 @@ import Swal from 'sweetalert2';
 export class BookNewComponent implements OnInit {
   files:any;
   bookForm: FormGroup;
+  errors:any;
   authors: Author[]=[];
   cates: Category[]=[];
   editorConfig: AngularEditorConfig = {
@@ -103,12 +106,17 @@ imageUpload(event){
 }
   submitForm(event){
     event.preventDefault();
-    var myFormData = new FormData();
-      const headers = new HttpHeaders();
+    let myFormData = new FormData();
+     let headers = new HttpHeaders();
       headers.append('Content-Type', 'multipart/form-data');
       headers.append('Accept', 'application/json');
       myFormData.append('image', this.files);
-      myFormData.append('data', JSON.stringify(this.bookForm.value));
+      myFormData.append('title', this.bookForm.value.title);
+      myFormData.append('categoryId', this.bookForm.value.categoryId);
+      myFormData.append('detail', this.bookForm.value.detail);
+      myFormData.append('short_desc', this.bookForm.value.short_desc);
+      myFormData.append('authorId', this.bookForm.value.authorId);
+      myFormData.append('price', this.bookForm.value.price);
 
     this.bookService.store(myFormData,headers).subscribe(data => {
       if(data.id){
@@ -119,10 +127,11 @@ imageUpload(event){
           timer: 1500
         })
         this.router.navigate(['/admin/sach']);
-      }else{
-        console.log(data)
       }
-    })
+    }
+    ,(errorResponse: HttpErrorResponse) => {
+      this.errors=errorResponse.error.errors;
+    },)
  
   }
   public isCollapsed: boolean;
