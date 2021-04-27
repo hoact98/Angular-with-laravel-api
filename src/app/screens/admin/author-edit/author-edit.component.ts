@@ -24,7 +24,9 @@ export class AuthorEditComponent implements OnInit {
       this.authorId = params.id;
     });
     await this.authorService.findById(this.authorId).subscribe(data => {
-        
+      if(data.id == undefined){
+        this.router.navigate(['/admin/tac-gia']);
+      }
       this.editForm.setValue({id: data.id, name: data.name});
     })
   }

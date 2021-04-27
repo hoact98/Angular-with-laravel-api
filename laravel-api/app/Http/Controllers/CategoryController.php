@@ -20,8 +20,14 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::find($id);
-        $category->load('books');
-        return response()->json($category, Response::HTTP_OK);
+        if($category){
+            $category->load('books');
+            return response()->json($category, Response::HTTP_OK);
+        }else{
+            return response()->json([
+                'message' => 'Id không tồn tại'
+            ]);
+        }
     }
     public function store(SaveCategoryRequest $request)
     {

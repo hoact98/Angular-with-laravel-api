@@ -19,8 +19,14 @@ class AuthorController extends Controller
     public function show($id)
     {
         $author = Author::find($id);
-        $author->load('books');
-        return response()->json($author, Response::HTTP_OK);
+        if($author){
+            $author->load('books');
+            return response()->json($author, Response::HTTP_OK);
+        }else{
+            return response()->json([
+                'message' => 'Id không tồn tại'
+            ]);
+        }
     }
     public function store(SaveAuthorRequest $request)
     {

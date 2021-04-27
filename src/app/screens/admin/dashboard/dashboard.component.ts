@@ -24,6 +24,35 @@ export class DashboardComponent implements OnInit {
   page=1;
   constructor(private cateService: CategoryService,private userService: UserService,private bookService: BookService, private authorService: AuthorService) { }
 
+
+  ngOnInit(): void {
+   this.getCateList();
+   this.getAuthorList();
+   this.getBookList();
+   this.getUserList();
+  }
+  getAuthorList(){
+    this.authorService.getAll().subscribe(data => {
+      this.authors = data;
+    })
+  }
+  getCateList(){
+    this.cateService.getAll().subscribe(data => {
+      this.cates = data;
+    })
+  }
+  getBookList(){
+    this.bookService.getAll(this.keyword,this.page).subscribe(data=>{
+      this.books = data.total;
+    })
+  }
+  getUserList(){
+    this.userService.getAll().subscribe(data=>{
+      this.users = data;
+    })
+  }
+/*
+  
   radioModel: string = 'Month';
 
   // lineChart1
@@ -225,31 +254,5 @@ export class DashboardComponent implements OnInit {
   ];
   public barChart1Legend = false;
   public barChart1Type = 'bar';
-
-  ngOnInit(): void {
-   this.getCateList();
-   this.getAuthorList();
-   this.getBookList();
-   this.getUserList();
-  }
-  getAuthorList(){
-    this.authorService.getAll().subscribe(data => {
-      this.authors = data;
-    })
-  }
-  getCateList(){
-    this.cateService.getAll().subscribe(data => {
-      this.cates = data;
-    })
-  }
-  getBookList(){
-    this.bookService.getAll(this.keyword,this.page).subscribe(data=>{
-      this.books = data.total;
-    })
-  }
-  getUserList(){
-    this.userService.getAll().subscribe(data=>{
-      this.users = data;
-    })
-  }
+  */
 }

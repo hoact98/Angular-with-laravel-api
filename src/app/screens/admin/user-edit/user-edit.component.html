@@ -1,73 +1,126 @@
 <div class="animated fadeIn">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fa fa-edit"></i>Cập nhật tài khoản
-                    <div class="card-header-actions">
-                        <button type="button" class="card-header-action btn btn-link btn-setting"><i class="icon-settings"></i></button>
-                        <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
-                        <button type="button" class="card-header-action btn btn-link btn-close"><i class="icon-close"></i></button>
+            <tabset>
+                <tab heading="Thông tin">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-edit"></i>Cập nhật tài khoản
+                            <div class="card-header-actions">
+                                <button type="button" class="card-header-action btn btn-link btn-setting"><i class="icon-settings"></i></button>
+                                <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                                <button type="button" class="card-header-action btn btn-link btn-close"><i class="icon-close"></i></button>
+                            </div>
+                        </div>
+                        <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
+                            <form action="" (submit)="saveUser($event)" [formGroup]="editForm">
+                                <div class="form-group">
+                                    <label for="">Tên tài khoản</label>
+                                    <input type="text" formControlName="name" class="form-control">
+                                </div>
+                                <div *ngIf="f.name.invalid && (f.name.dirty || f.name.touched)" class="alert alert-danger">
+
+                                    <div *ngIf="f.name.errors?.required">
+                                        Không được để trống
+                                    </div>
+                                    <div *ngIf="f.name.errors?.minlength">
+                                        Ít nhất 4 ký tự
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">Email</label>
+                                    <input type="email" formControlName="email" class="form-control">
+                                </div>
+                                <div *ngIf="f.email.invalid && (f.email.dirty || f.email.touched)" class="alert alert-danger">
+
+                                    <div *ngIf="f.email.errors?.required">
+                                        Không được để trống
+                                    </div>
+                                    <div *ngIf="f.email.errors?.email">
+                                        Email không hợp lệ
+                                    </div>
+                                </div>
+                                <div *ngIf="errors" class="alert alert-danger">
+                                    {{errors.email}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Ảnh</label>
+                                    <input type="file" formControlName="avatar" (change)="avatarUpload($event)" class="form-control">
+                                    <img [src]="imageDirectoPath+avatar" alt="" width="200">
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Role</label>
+                                    <select class="form-control" formControlName="role">
+                                        <option value="">-- Role --</option>
+                                        <option value="0">Member</option>
+                                        <option value="1">Admin</option>
+                                    </select>
+                                </div>
+                                <div *ngIf="f.role.invalid && (f.role.dirty || f.role.touched)" class="alert alert-danger">
+
+                                    <div *ngIf="f.role.errors?.required">
+                                        Không được để trống
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button [disabled]="editForm.invalid" type="submit" class="btn btn-primary">Lưu</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
-                    <form action="" (submit)="saveUser($event)" [formGroup]="editForm">
+                </tab>
+                <tab heading="Mật khẩu">
+                    <form action="" (submit)="savePass($event)" [formGroup]="createFormPass">
                         <div class="form-group">
-                            <label for="">Tên tài khoản</label>
-                            <input type="text" formControlName="name" class="form-control">
+                            <label for="">Mật khẩu hiện tại</label>
+                            <input type="password" formControlName="password" class="form-control">
                         </div>
-                        <div *ngIf="f.name.invalid && (f.name.dirty || f.name.touched)" class="alert alert-danger">
+                        <div *ngIf="p.password.invalid && (p.password.dirty || p.password.touched)" class="alert alert-danger">
 
-                            <div *ngIf="f.name.errors?.required">
+                            <div *ngIf="p.password.errors?.required">
                                 Không được để trống
                             </div>
-                            <div *ngIf="f.name.errors?.minlength">
-                                Ít nhất 4 ký tự
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Email</label>
-                            <input type="email" formControlName="email" class="form-control">
-                        </div>
-                        <div *ngIf="f.email.invalid && (f.email.dirty || f.email.touched)" class="alert alert-danger">
-
-                            <div *ngIf="f.email.errors?.required">
-                                Không được để trống
-                            </div>
-                            <div *ngIf="f.email.errors?.email">
-                                Email không hợp lệ
+                            <div *ngIf="p.password.errors?.minlength">
+                                Ít nhất 6 ký tự
                             </div>
                         </div>
                         <div *ngIf="errors" class="alert alert-danger">
-                            {{errors.email}}
+                            {{errors.password}} {{errors.confirm_pass}}
                         </div>
+                        <div *ngIf="message" class="alert alert-danger">{{message}}</div>
                         <div class="form-group">
-                            <label for="">Ảnh</label>
-                            <input type="file" formControlName="avatar" (change)="avatarUpload($event)" class="form-control">
-                            <img [src]="imageDirectoPath+avatar" alt="" width="200">
-
+                            <label for="">Mật khẩu mới</label>
+                            <input type="password" formControlName="res_pass" class="form-control">
                         </div>
-                        <div class="form-group">
-                            <label for="">Role</label>
-                            <select class="form-control" formControlName="role">
-                                <option value="">-- Role --</option>
-                                <option value="0">Member</option>
-                                <option value="1">Admin</option>
-                            </select>
-                        </div>
-                        <div *ngIf="f.role.invalid && (f.role.dirty || f.role.touched)" class="alert alert-danger">
+                        <div *ngIf="p.res_pass.invalid && (p.res_pass.dirty || p.res_pass.touched)" class="alert alert-danger">
 
-                            <div *ngIf="f.role.errors?.required">
+                            <div *ngIf="p.res_pass.errors?.required">
                                 Không được để trống
                             </div>
+                            <div *ngIf="p.res_pass.errors?.minlength">
+                                Ít nhất 6 ký tự
+                            </div>
                         </div>
-                        <div class="text-center">
-                            <button [disabled]="editForm.invalid" type="submit" class="btn btn-primary">Lưu</button>
+                        <div class="form-group">
+                            <label for="">Nhập lại mật khẩu mới</label>
+                            <input type="password" formControlName="confirm_pass" class="form-control">
                         </div>
+                        <div *ngIf="p.confirm_pass.invalid && (p.confirm_pass.dirty || p.confirm_pass.touched)" class="alert alert-danger">
+
+                            <div *ngIf="p.confirm_pass.errors?.required">
+                                Không được để trống
+                            </div>
+                            <div *ngIf="p.confirm_pass.errors?.minlength">
+                                Ít nhất 6 ký tự
+                            </div>
+                        </div>
+                        <button [disabled]="createFormPass.invalid" type="submit" class="btn btn-primary">Lưu</button>
                     </form>
-                </div>
-            </div>
+                </tab>
+            </tabset>
+
         </div>
         <!--/.col-->
     </div>

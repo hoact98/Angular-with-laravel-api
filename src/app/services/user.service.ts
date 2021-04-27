@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map,catchError } from 'rxjs/operators';
 
-// let access_token = JSON.parse(localStorage.getItem('access_token'));
 
 const httpOptions = {
   headers:new HttpHeaders({'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest',
@@ -66,5 +65,12 @@ export class UserService {
     .pipe(map(user => {
         return user;
     }));
+  }
+
+  changePass(object){
+    let requestUrl = `http://localhost:8000/api/change-pass/${object.id}`;
+    console.log(requestUrl);
+    
+    return this.http.put<any>(requestUrl,object);
   }
 }

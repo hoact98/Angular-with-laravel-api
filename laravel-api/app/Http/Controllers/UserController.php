@@ -21,7 +21,13 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return response()->json($user, Response::HTTP_OK);
+        if($user){
+            return response()->json($user, Response::HTTP_OK);
+        }else{
+            return response()->json([
+                'message' => 'Id không tồn tại'
+            ]);
+        }
     }
     public function store(SaveUserRequest $request)
     {

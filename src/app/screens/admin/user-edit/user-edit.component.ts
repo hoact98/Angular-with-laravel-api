@@ -18,7 +18,7 @@ export class UserEditComponent implements OnInit {
   imageDirectoPath: any = 'http://localhost:8000/';
   avatar='';
   errors:any;
-
+message='';
   constructor(private userService: UserService,
     private route: ActivatedRoute,
             private router: Router,) { 
@@ -31,7 +31,15 @@ export class UserEditComponent implements OnInit {
      
     });
     await this.userService.findById(this.userId).subscribe(data => {
+      if(data.id == undefined){
+        this.router.navigate(['/admin/tai-khoan']);
+      }
       this.avatar=data.avatar;
+      this.createFormPass.patchValue(
+        {
+          id: data.id
+        }
+      );
       this.editForm.setValue(
         {
            id: data.id,
@@ -57,7 +65,7 @@ export class UserEditComponent implements OnInit {
   get f(){
     return this.editForm.controls;
   }
- 
+
   avatarUpload(event){
   this.files = event.target.files[0];
 }
@@ -86,6 +94,33 @@ export class UserEditComponent implements OnInit {
       this.errors=errorResponse.error.errors;
     },)
  
+  }
+  createFormPass = new FormGroup({
+    id: new FormControl(-1),
+    password: new FormControl('', [Validators.required,Validators.minLength(6)]),
+    res_pass: new FormControl('', [Validators.required,Validators.minLength(6)]),
+    confirm_pass: new FormControl('', [Validators.required,Validators.minLength(6)]),
+  });
+  get p(){
+    return this.createFormPass.controls;
+  }
+  savePass(event){
+    event.preventDefault();
+    this.userService.changePass(this.createFormPass.value).subscribe(data => {
+       if(data.status=='success'){
+        Swal.fire({
+          icon: 'success',
+          title: 'Đổi mật khẩu thành công!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        // this.router.navigate(['/admin/danh-muc']);
+       }else{
+         this.errors= data.error;
+        this.message= data.message;
+       }
+    },
+    )
   }
   public isCollapsed: boolean;
   iconCollapse: string = 'icon-arrow-up';

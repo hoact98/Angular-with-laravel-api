@@ -83,6 +83,9 @@ export class BookEditComponent implements OnInit {
      
     });
     await this.bookService.findById(this.bookId).subscribe(data => {
+      if(data.id == undefined){
+        this.router.navigate(['/admin/sach']);
+      }
       this.getAuthorList();
       this.getCateList();
       this.image=data.image;

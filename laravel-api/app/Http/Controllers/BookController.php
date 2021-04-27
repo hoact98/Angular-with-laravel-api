@@ -89,9 +89,16 @@ class BookController extends Controller
     public function show($id)
     {
         $book = Book::find($id);
-        $book->load('category');
-        $book->load('author');
-        return response()->json($book, Response::HTTP_OK);
+        if($book){
+            $book->load('category');
+            $book->load('author');
+            return response()->json($book, Response::HTTP_OK);
+        }else{
+            return response()->json([
+                'message' => 'Id không tồn tại'
+            ]);
+        }
+
     }
     public function relate($id,$idPro)
     {

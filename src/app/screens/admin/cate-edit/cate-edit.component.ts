@@ -24,7 +24,9 @@ export class CateEditComponent implements OnInit {
       this.cateId = params.id;
     });
     await this.cateService.findById(this.cateId).subscribe(data => {
-        
+      if(data.id == undefined){
+        this.router.navigate(['/admin/danh-muc']);
+      }
       this.editForm.setValue({id: data.id, name: data.name});
     })
   }

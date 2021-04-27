@@ -27,7 +27,7 @@ class AuthController extends Controller
           'password' => 'required|min:6'
         ];
         $messages = [
-            'email.required' => "Hãy nhập tên sách",
+            'email.required' => "Hãy nhập email",
             'password.min' => "Ít nhất có 6 ký tự",
             'email.email' => "Email không đúng định dạng",
         ];
@@ -87,5 +87,39 @@ public function user(Request $request)
     {
       return response()->json($request->user());
     }
-
+public function changePass(Request $request)
+    {
+       $rule= [
+          'password' => 'required|min:6',
+          'res_pass' => 'required|min:6',
+          'confirm_pass' => 'required|same:res_pass',
+      ];
+      $messages = [
+          'password.required' => 'Mật khẩu không được để trống!',
+          'password.min' => 'Mật khẩu tối thiểu 6 kí tự',
+          'res_pass.required' => 'Mật khẩu không được để trống!',
+          'res_pass.min' => 'Mật khẩu tối thiểu 6 kí tự',
+          'confirm_pass.required' => 'Mật khẩu không được để trống',
+          'confirm_pass.same' => 'Mật khẩu xác nhận không giống nhau',
+      ];
+ 
+      $validator =  Validator::make($request->all(),$rule,$messages);
+      if ($validator->fails()) {
+          return response()->json(['error'=>$validator->errors()]);
+      }else{
+           $user = User::find($request->id);
+           if (Hash::check($request->password, $user->password)) {
+             $user->password = Hash::make($request->res_pass);
+             $user->save();
+             return response()->json([
+              'status' => 'success',
+          ]);
+           }else{
+            return response()->json([
+              'message' => 'Tài khoản hoặc mật khẩu không đúng'
+          ]);
+           }
+          
+      }
+    }
 }
